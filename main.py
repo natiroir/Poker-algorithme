@@ -421,7 +421,7 @@ def cartejp(nbjoueur):
 #FONCTION DES MISES
 
 def misej(i,nbjoueur,premierj,affichagev):
-    global jetonsjoueur, actionbouton, variables_bluff_par_joueur
+    global jetonsjoueur, actionbouton, variables_bluff_par_joueur, antiremise
     actionbouton = -2
     njoueuralgo1 = 1
     carteplateauv = []
@@ -448,7 +448,10 @@ def misej(i,nbjoueur,premierj,affichagev):
             misejoueur = "call"
         elif c[0] == 2:
             misejoueur = "bet"
+            antiremise[(premierj+i)%nbjoueur] +=1
         print(misejoueur)
+        if antiremise[(premierj+i)%nbjoueur] >2:
+            misejoueur = "call"
 
     elif affichagev == True:
         while actionbouton == -2:
@@ -550,7 +553,9 @@ def misemax(misemax,max):
 #FONCTION POUR UNE PARTIE
 
 def partie(nbjoueur,potjoueur,bb,affichagev):
-    global mise, pot, quijoue, jetonsjoueur, cartejoueur, carteplateau, partieavancementv, vinterfaffichage, blufflist
+    global mise, pot, quijoue, jetonsjoueur, cartejoueur, carteplateau, partieavancementv, vinterfaffichage, blufflist,antiremise
+
+    antiremise = [0 for i in range(nbjoueur)]
 
     jetonsjoueur = potjoueur
 
@@ -620,6 +625,8 @@ def partie(nbjoueur,potjoueur,bb,affichagev):
             pot += k
         i += 1
     
+    antiremise = [0 for i in range(nbjoueur)]
+
     if quijoue.count(1) == 1:
         if affichagev == True:
             vinterfaffichage = [1,cartejoueur,carteplateau,quijoue,pot,mise,jetonsjoueur,jetonsgagner,quijoue.index(1),quijouepartie]
@@ -647,6 +654,8 @@ def partie(nbjoueur,potjoueur,bb,affichagev):
             pot += k
         i += 1
 
+    antiremise = [0 for i in range(nbjoueur)]
+
     if quijoue.count(1) == 1:
         if affichagev == True:
             vinterfaffichage = [2,cartejoueur,carteplateau,quijoue,pot,mise,jetonsjoueur,jetonsgagner,quijoue.index(1),quijouepartie]
@@ -673,6 +682,8 @@ def partie(nbjoueur,potjoueur,bb,affichagev):
             pot += k
         i += 1
 
+    antiremise = [0 for i in range(nbjoueur)]
+
     if quijoue.count(1) == 1:
         if affichagev == True:
             vinterfaffichage = [3,cartejoueur,carteplateau,quijoue,pot,mise,jetonsjoueur,jetonsgagner,quijoue.index(1),quijouepartie]
@@ -698,6 +709,8 @@ def partie(nbjoueur,potjoueur,bb,affichagev):
             mise[((premierj+i)%nbjoueur)] += k
             pot += k
         i += 1
+
+    antiremise = [0 for i in range(nbjoueur)]
 
     if quijoue.count(1) == 1:
         if affichagev == True:
@@ -819,8 +832,8 @@ def game(nbjoueur,jetonsmax,bb,affichage):
                     c+= 1
             print(quijouepartie,potjoueur,classementdesmains,jetonsgagner)
 
-        if bbv%4 == 0:
-            bb = bb*2
+        if bbv%6 == 0:
+            bb = int(bb*1.5)
 
         bbv+=1
 
