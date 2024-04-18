@@ -1,6 +1,6 @@
 nbjoueur = 6
 variable de bluff pour chaque joueur = [0,0,0]
 variable surete pour chaque joueur = [1,1,1]
-jetonparjoueur = 1200
+jetonparjoueur = 1500
 bigblind = 40
 affichage = True
